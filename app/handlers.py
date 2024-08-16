@@ -30,8 +30,8 @@ async def start(message: Message):
     await message.answer('''
 Здравствуй, странник.
 Что привело тебя ко мне?
-У тебя есть вопросы, на которые ты хочешь узнать ответ? - /new_layout
-Могу рассказать о расскладах, которыми владею - /about_layouts
+У тебя есть вопросы, на которые ты хочешь узнать ответ? Давай раскинем карты? - /new_layout
+Могу рассказать о расскладах, которыми владею. - /about_layouts
 Или же ты новичок во всем этом и хочешь узнать основы? - /how_to_use
 ''')
 
@@ -41,6 +41,54 @@ async def start(message: Message):
 async def about_layout(message: Message):
     await message.answer(text=mg.layouts['about_layouts'],
                          reply_markup=kb.layout_btn)
+
+
+# layout ReplyKeyboardMarkup - Информация о раскладе 'Предсказание будущего'
+@router.message(F.text == 'Предсказание Будущего')
+async def scrying_the_future_spread_info(message: Message):
+    await message.answer(
+        mg.layouts['scrying_the_future_spread'],
+        parse_mode='html'
+                        )
+    file_path = FSInputFile('cards_layouts/scrying_the_future_spread.png')
+    await message.bot.send_photo(chat_id=message.chat.id,
+                                 photo=file_path)
+
+
+# layout ReplyKeyboardMarkup - Информация о раскладе 'Расклад-совет'
+@router.message(F.text == 'Расклад - Совет')
+async def advice_spread_info(message: Message):
+    await message.answer(
+        mg.layouts['advice_spread'],
+        parse_mode='html'
+                        )
+    file_path = FSInputFile('cards_layouts/advice_spread.png')
+    await message.bot.send_photo(chat_id=message.chat.id,
+                                 photo=file_path)
+
+
+# layout ReplyKeyboardMarkup - Информация о раскладе 'Пятикарточный расклад'
+@router.message(F.text == 'Пятикарточный Расклад')
+async def five_card_overview_spread_info(message: Message):
+    await message.answer(
+        mg.layouts['five_card_overview_spread'],
+        parse_mode='html'
+                        )
+    file_path = FSInputFile('cards_layouts/five_card_overview_spread.png')
+    await message.bot.send_photo(chat_id=message.chat.id,
+                                 photo=file_path)
+
+
+# layout ReplyKeyboardMarkup - Информация о раскладе 'От Рая до Ада'
+@router.message(F.text == 'От Рая до Ада')
+async def from_heavens_to_hell_spread_info(message: Message):
+    await message.answer(
+        mg.layouts['from_heavens_to_hell_spread'],
+        parse_mode='html'
+                        )
+    file_path = FSInputFile('cards_layouts/from_heavens_to_hell_spread.png')
+    await message.bot.send_photo(chat_id=message.chat.id,
+                                 photo=file_path)
 
 
 # Команда "/help"
@@ -86,54 +134,6 @@ async def about_arcana_1(callback: CallbackQuery):
     await callback.message.answer(text=f"{mg.about_arcanas[callback.data]}",
                                   parse_mode='html')
     # await callback.message.delete()
-
-
-# layout ReplyKeyboardMarkup - Информация о раскладе 'Предсказание будущего'
-@router.message(F.text == 'Предсказание будущего')
-async def scrying_the_future_spread_info(message: Message):
-    await message.answer(
-        mg.layouts['scrying_the_future_spread'],
-        parse_mode='html'
-                        )
-    file_path = FSInputFile('cards_layouts/scrying_the_future_spread.png')
-    await message.bot.send_photo(chat_id=message.chat.id,
-                                 photo=file_path)
-
-
-# layout ReplyKeyboardMarkup - Информация о раскладе 'Расклад-совет'
-@router.message(F.text == 'Расклад - совет')
-async def advice_spread_info(message: Message):
-    await message.answer(
-        mg.layouts['advice_spread'],
-        parse_mode='html'
-                        )
-    file_path = FSInputFile('cards_layouts/advice_spread.png')
-    await message.bot.send_photo(chat_id=message.chat.id,
-                                 photo=file_path)
-
-
-# layout ReplyKeyboardMarkup - Информация о раскладе 'Пятикарточный расклад'
-@router.message(F.text == 'Пятикарточный расклад')
-async def five_card_overview_spread_info(message: Message):
-    await message.answer(
-        mg.layouts['five_card_overview_spread'],
-        parse_mode='html'
-                        )
-    file_path = FSInputFile('cards_layouts/five_card_overview_spread.png')
-    await message.bot.send_photo(chat_id=message.chat.id,
-                                 photo=file_path)
-
-
-# layout ReplyKeyboardMarkup - Информация о раскладе 'От Рая до Ада'
-@router.message(F.text == 'От Рая до Ада')
-async def from_heavens_to_hell_spread_info(message: Message):
-    await message.answer(
-        mg.layouts['from_heavens_to_hell_spread'],
-        parse_mode='html'
-                        )
-    file_path = FSInputFile('cards_layouts/from_heavens_to_hell_spread.png')
-    await message.bot.send_photo(chat_id=message.chat.id,
-                                 photo=file_path)
 
 
 # Этот хэндлер будет срабатывать на команду /new_layout
@@ -253,6 +253,7 @@ async def interpretation_pentacles(message: Message):
     await message.answer(text='Выберитер Аркан',
                          reply_markup=keyboard)
 
+
 # Вызов фукнции интерпретация отдельной карты в двух смыслах
 @router.callback_query(F.data.in_(all_arcanas))
 async def reading_arcana(callback: CallbackQuery):
@@ -270,4 +271,4 @@ async def reading_arcana(callback: CallbackQuery):
 @router.message(F.text)
 async def random_text(message: Message):
     await message.answer(text='''Не совсем понимаю о чем вы.
-Выберете команду из меню, чтобы мы могли продолжить общение''')
+Выберете команду из меню, чтобы мы могли продолжить общение.''')
