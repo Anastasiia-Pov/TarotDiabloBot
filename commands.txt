@@ -1,0 +1,6 @@
+new_layout - новый расклад
+help - помощь
+how_to_use - как пользоваться
+about_layouts - о раскладах
+about_arcanas - хочу знать больше об арканах
+interpretation - интерпретация отдельной карты
