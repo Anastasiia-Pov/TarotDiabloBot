@@ -79,6 +79,3 @@ def create_inline_kb(request: str,
                 callback_data=el))
     kb_builder.row(*buttons, width=2)
     return kb_builder.as_markup()
-
-
-# def reading()
