@@ -1,7 +1,7 @@
 # TarotDiabloBot
 
 This Telegram Bot is created to practise aiogram3 skills.
-Based on Tarot Diablo by Blizzard: https://uk.gear.blizzard.com/products/diabgp0003-diablo-the-sanctuary-tarot-deck-and-guidebook
+Based on Tarot Diablo by Blizzard: https://uk.gear.blizzard.com/products/diabgp0003-diablo-the-sanctuary-tarot-deck-and-guidebook.
 All the cards' interpretations were taken from the GuideBook by Blizzard.
 
 To implement layout mode - random.choices was used.
@@ -27,15 +27,15 @@ TarotDiabloBot/
 ```
 
 - ```main.py``` - entry point
-- ``app``` - contains all the neccessary files to run the bot correctly
-- ``tarot_cards``` - contains all the messages that are needed to be printed by the bot
+- ```app``` - contains all the neccessary files to run the bot correctly
+- ```tarot_cards``` - contains all the messages that are needed to be printed by the bot
 
 User has an option of 4 layouts.
 
 ### Commands
-```new_layout``` - новый расклад - to start a new layout;
-```help``` - помощь - ask for help;
-```how_to_use``` - как пользоваться - tells a user of how to use a bot;
-```about_layouts``` - о раскладах - tells a user about available layouts;
-```about_arcanas``` - хочу знать больше об арканах - provides a user with more information about Major and Minor Arcanas and suit cards;
-```interpretation``` - интерпретация отдельной карты - bot provides an opportunity to learn more about interpretationa of each card separately.
+- ```new_layout``` - новый расклад - to start a new layout;
+- ```help``` - помощь - ask for help;
+- ```how_to_use``` - как пользоваться - tells a user of how to use a bot;
+- ```about_layouts``` - о раскладах - tells a user about available layouts;
+- ```about_arcanas``` - хочу знать больше об арканах - provides a user with more information about Major and Minor Arcanas and suit cards;
+- ```interpretation``` - интерпретация отдельной карты - bot provides an opportunity to learn more about interpretationa of each card separately.
