@@ -16,10 +16,11 @@ help_btn = ReplyKeyboardMarkup(keyboard=[
 
 
 layout_btn = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text='Карта Дня')],
     [KeyboardButton(text='Предсказание Будущего'),
      KeyboardButton(text='Расклад - Совет')],
-    [KeyboardButton(text='Пятикарточный Расклад')],
-    [KeyboardButton(text='От Рая до Ада')]
+    [KeyboardButton(text='Пятикарточный Расклад'),
+     KeyboardButton(text='От Рая до Ада')]
     ],
                               resize_keyboard=True,
                               input_field_placeholder="Выберите расклад из меню ниже")
@@ -34,6 +35,8 @@ git_tg = InlineKeyboardMarkup(inline_keyboard=[
 
 
 new_layout_btn = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text='Карта Дня',
+                          callback_data='Карта Дня')],
     [InlineKeyboardButton(text='Предсказание Будущего',
                           callback_data='Предсказание Будущего')],
     [InlineKeyboardButton(text='Расклад - Совет',

@@ -14,6 +14,7 @@ from aiogram.fsm.context import FSMContext
 from app.performing_layout import perform_layout
 from tarot_cards.arcanas import all_arcanas
 from tarot_cards.arcanas_interpretation import arcanas_interpretation
+from config import support
 
 router = Router()
 
@@ -37,10 +38,25 @@ async def start(message: Message):
 
 
 # Команда "/about_layouts - о раскладах"
+@router.message(Command('how_to_use'))
+async def how_to_use(message: Message):
+    await message.answer(text=mg.how_to_use)
+
+
+# Команда "/about_layouts - о раскладах"
 @router.message(Command('about_layouts'))
 async def about_layout(message: Message):
     await message.answer(text=mg.layouts['about_layouts'],
                          reply_markup=kb.layout_btn)
+
+
+# layout ReplyKeyboardMarkup - Информация о раскладе 'Карта Дня'
+@router.message(F.text == 'Карта Дня')
+async def card_of_the_day_spread_info(message: Message):
+    await message.answer(
+        mg.layouts['card_of_the_day'],
+        parse_mode='html'
+                        )
 
 
 # layout ReplyKeyboardMarkup - Информация о раскладе 'Предсказание будущего'
@@ -108,7 +124,7 @@ async def project_info(message: Message):
 # help ReplyKeyboardMarkup - Сообщить об ошибке
 @router.message(F.text == 'Нашел ошибку?')
 async def error_inform(message: Message):
-    await message.answer('Ответ на доработке!')
+    await message.answer(f'Сообщите нам о ней в группе поддержки: {support}')
 
 
 # help ReplyKeyboardMarkup - Информация о проекте
@@ -129,6 +145,7 @@ async def about_arcanas(message: Message):
 # Команда "/about_arcanas - больше информации об арканах: Cтаршие, младшие, мечи, жезлы, чаши, пентакли"
 @router.callback_query(F.data.in_(mg.about_arcanas))
 async def about_arcana_1(callback: CallbackQuery):
+    await callback.answer()
     await callback.message.answer(f'Вы выбрали <b>{callback.data}</b>',
                                   parse_mode='html')
     await callback.message.answer(text=f"{mg.about_arcanas[callback.data]}",
@@ -170,16 +187,19 @@ async def process_layout(message: Message, state: FSMContext):
 # Этот хэндлер будет срабатывать на нажатие кнопки при
 # выборе расклада и переводить в состояние выбора арканов
 @router.callback_query(StateFilter(FSMAskQuestion.layout),
-                       F.data.in_(['Предсказание Будущего',
+                       F.data.in_(['Карта Дня',
+                                   'Предсказание Будущего',
                                    'Расклад - Совет',
                                    'Пятикарточный Расклад',
                                    'От Рая до Ада']))
 async def process_arcanas(callback: CallbackQuery,
                           state: FSMContext):
     await state.update_data(layout=callback.data)
+    await callback.answer()
     await callback.message.answer(f'Вы выбрали расклад: <b>{callback.data}</b>',
                                   parse_mode='html')
     await callback.message.delete()
+    await callback.answer()
     await callback.message.answer(text="<b>Какие арканы будем использовать для расклада?</b>",
                                   parse_mode='html',
                                   reply_markup=kb.choose_arcanas)

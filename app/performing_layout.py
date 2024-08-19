@@ -23,7 +23,7 @@ def perform_layout(data):
                 answer += f"""<b>{list_of_questions[i]} - Карта {result_keys[i]}:</b> {arcanas_interpretation[result_keys[i]][bool(*result[result_keys[i]])]}\n\n"""
             else:
                 answer += f"""<b>{list_of_questions[i]} - Перевернутая Карта {result_keys[i]}:</b> {arcanas_interpretation[result_keys[i]][bool(*result[result_keys[i]])]}\n\n"""
-    else:
+    elif data['layout'] == 'От Рая до Ада':
         # очень много костылей, переписать
         for i in range(5):
             if str(*result[result_keys[i]]) == 'True':
