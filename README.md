@@ -35,7 +35,7 @@ User has an option of 4 layouts.
 ### Commands
 - ```new_layout``` - новый расклад - to start a new layout;
 - ```help``` - помощь - ask for help;
-- ```how_to_use``` - как пользоваться - tells a user of how to use a bot;
+- ```how_to_use``` - как пользоваться - tells a user how to use a bot;
 - ```about_layouts``` - о раскладах - tells a user about available layouts;
 - ```about_arcanas``` - хочу знать больше об арканах - provides a user with more information about Major and Minor Arcanas and suit cards;
 - ```interpretation``` - интерпретация отдельной карты - bot provides an opportunity to learn more about interpretationa of each card separately.
