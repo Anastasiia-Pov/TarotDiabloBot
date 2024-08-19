@@ -30,7 +30,7 @@ TarotDiabloBot/
 - ```app``` - contains all the neccessary files to run the bot correctly
 - ```tarot_cards``` - contains all the messages that are needed to be printed by the bot
 
-User has an option of 4 layouts.
+User has an option of 5 layouts: Card of the Day, Scrying the Future Spread, Advice Spread, Five Card Overview Spread, From Heavens to Hell Spread.
 
 ### Commands
 - ```new_layout``` - новый расклад - to start a new layout;
