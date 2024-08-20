@@ -28,8 +28,7 @@ def perform_layout(data):
 
     for i in range(layout_questions[data['layout']]['number']):
         if i == 5:
-            answer += f"<b>6.-9. Пандемониум: символизирует битвы, с которыми вы столкнетесь, принимая все части себя и пытаясь найти путь к мастерству и свободе.</b>\n"
-            answer += compile_answer(result, result_keys, list_of_questions, 5)
+            answer += f"<b>{list_of_questions[5]}</b>\n\n"
         else:
             answer += compile_answer(result, result_keys, list_of_questions, i)
 
