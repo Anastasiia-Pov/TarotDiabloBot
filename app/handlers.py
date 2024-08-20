@@ -5,6 +5,7 @@ from aiogram.filters import ChatMemberUpdatedFilter, KICKED
 from aiogram.types import ChatMemberUpdated, CallbackQuery
 from aiogram.filters import BaseFilter
 import asyncio
+import re
 import app.keyboards as kb
 import app.messages as mg
 from aiogram.methods.send_photo import SendPhoto
@@ -221,8 +222,15 @@ async def finish_input_for_layout(callback: CallbackQuery,
     await callback.message.answer('''Выполняю расклад 🔮\nОжидайте...''')
     await asyncio.sleep(4)
     result = perform_layout(data)
-    await callback.message.answer(text=result,
-                                  parse_mode='html')
+    if len(result) >= 4096:
+        result = re.split('<b>6.-9.', result)
+        await callback.message.answer(text=result[0],
+                                      parse_mode='html')
+        await callback.message.answer(text='<b>6.-9.' + result[1],
+                                      parse_mode='html')
+    else:
+        await callback.message.answer(text=result,
+                                      parse_mode='html')
     # Завершаем машину состояний
     await state.clear()
 
