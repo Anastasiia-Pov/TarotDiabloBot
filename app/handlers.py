@@ -6,8 +6,6 @@ from aiogram.types import ChatMemberUpdated, CallbackQuery
 from aiogram.filters import BaseFilter
 import asyncio
 import re
-import app.keyboards as kb
-import app.messages as mg
 from aiogram.methods.send_photo import SendPhoto
 from aiogram.fsm.state import State, StatesGroup, default_state
 from aiogram.fsm.context import FSMContext
@@ -15,9 +13,16 @@ from aiogram.fsm.context import FSMContext
 from app.performing_layout import perform_layout
 from tarot_cards.arcanas import all_arcanas
 from tarot_cards.arcanas_interpretation import arcanas_interpretation
+from app.messages import layout_questions
 from config import support
+from app.keyboards import CreateKeyboards
+import app.messages as mg
+
 
 router = Router()
+
+
+create_keybords = CreateKeyboards()
 
 
 class FSMAskQuestion(StatesGroup):
@@ -48,7 +53,7 @@ async def how_to_use(message: Message):
 @router.message(Command('about_layouts'))
 async def about_layout(message: Message):
     await message.answer(text=mg.layouts['about_layouts'],
-                         reply_markup=kb.layout_btn)
+                         reply_markup=create_keybords.create_reply_keyboard('layout_btn'))
 
 
 # layout ReplyKeyboardMarkup - Информация о раскладе 'Карта Дня'
@@ -112,7 +117,7 @@ async def from_heavens_to_hell_spread_info(message: Message):
 @router.message(Command('help'))
 async def help_btn(message: Message):
     await message.answer(text="Что ты хочешь узнать?",
-                         reply_markup=kb.help_btn)
+                         reply_markup=create_keybords.create_reply_keyboard('help_btn'))  # ReplyKeyboardMarkup
 
 
 # help ReplyKeyboardMarkup - Информация о проекте
@@ -132,13 +137,13 @@ async def error_inform(message: Message):
 @router.message(F.text == 'Установить связь с создателем...')
 async def contact_creator(message: Message):
     await message.answer(text='Каким способом?',
-                         reply_markup=kb.git_tg)
+                         reply_markup=create_keybords.create_inline_kb('links'))
 
 
 # Команда "/about_arcanas - больше информации об арканах: Cтаршие, младшие, мечи, жезлы, чаши, пентакли"
 @router.message(Command('about_arcanas'))
 async def about_arcanas(message: Message):
-    keyboard = kb.create_inline_kb('about_arcanas')
+    keyboard = create_keybords.create_inline_kb('about_arcanas')
     await message.answer(text='О каких арканах хотите узнать больше?',
                          reply_markup=keyboard)
 
@@ -171,7 +176,7 @@ async def process_question(message: Message, state: FSMContext):
     await state.set_state(FSMAskQuestion.layout)
     await message.answer(text="<b>Какой расклад предпочтете?</b>",
                          parse_mode='html',
-                         reply_markup=kb.new_layout_btn)
+                         reply_markup=create_keybords.create_inline_kb('layout_btn'))
 
 
 # Этот хэндлер будет срабатывать после команды /new_layout - выбор расклада
@@ -179,7 +184,7 @@ async def process_question(message: Message, state: FSMContext):
 async def process_layout(message: Message, state: FSMContext):
     await message.answer(text="<b>Какой расклад предпочтете?</b>",
                          parse_mode='html',
-                         reply_markup=kb.new_layout_btn)
+                         reply_markup=create_keybords.create_inline_kb('layout_btn'))
 
     # Устанавливаем состояние ожидания выбора расклада
     await state.set_state(FSMAskQuestion.layout)
@@ -188,11 +193,7 @@ async def process_layout(message: Message, state: FSMContext):
 # Этот хэндлер будет срабатывать на нажатие кнопки при
 # выборе расклада и переводить в состояние выбора арканов
 @router.callback_query(StateFilter(FSMAskQuestion.layout),
-                       F.data.in_(['Карта Дня',
-                                   'Предсказание Будущего',
-                                   'Расклад - Совет',
-                                   'Пятикарточный Расклад',
-                                   'От Рая до Ада']))
+                       F.data.in_(layout_questions))
 async def process_arcanas(callback: CallbackQuery,
                           state: FSMContext):
     await state.update_data(layout=callback.data)
@@ -203,7 +204,7 @@ async def process_arcanas(callback: CallbackQuery,
     await callback.answer()
     await callback.message.answer(text="<b>Какие арканы будем использовать для расклада?</b>",
                                   parse_mode='html',
-                                  reply_markup=kb.choose_arcanas)
+                                  reply_markup=create_keybords.create_inline_kb('choose_arcanas'))
     # Устанавливаем состояние ожидания выбора арканов
     await state.set_state(FSMAskQuestion.arcanas)
 
@@ -222,6 +223,7 @@ async def finish_input_for_layout(callback: CallbackQuery,
     await callback.message.answer('''Выполняю расклад 🔮\nОжидайте...''')
     await asyncio.sleep(4)
     result = perform_layout(data)
+    # проверка длины сообщения
     if len(result) >= 4096:
         result = re.split('<b>6.-9.', result)
         await callback.message.answer(text=result[0],
@@ -235,17 +237,17 @@ async def finish_input_for_layout(callback: CallbackQuery,
     await state.clear()
 
 
-# Вызов фукнции интерпретация отдельной карты
+# Вызов фукнции интерпретация отдельной карты - /interpretation
 @router.message(Command('interpretation'))
 async def interpretation(message: Message):
-    await message.answer(text='Какую карту проинтерпритировать?',
-                         reply_markup=kb.interpret_arcanas)
+    await message.answer(text='Карту какой масти проинтерпритировать?',
+                         reply_markup=create_keybords.create_reply_keyboard('interpretation'))
 
 
 # Вызов фукнции интерпретация отдельной карты в Старших Арканах
 @router.message(F.text == 'Старшие Арканы')
 async def interpretation_majors(message: Message):
-    keyboard = kb.create_inline_kb('Старшие Арканы')
+    keyboard = create_keybords.create_inline_kb('major_arcanas')
     await message.answer(text='Выберитер Аркан',
                          reply_markup=keyboard)
 
@@ -253,7 +255,7 @@ async def interpretation_majors(message: Message):
 # Вызов фукнции интерпретация отдельной карты в Мечах
 @router.message(F.text == 'Мечи')
 async def interpretation_swords(message: Message):
-    keyboard = kb.create_inline_kb('Мечи')
+    keyboard = create_keybords.create_inline_kb('swords')
     await message.answer(text='Выберитер Аркан',
                          reply_markup=keyboard)
 
@@ -261,7 +263,7 @@ async def interpretation_swords(message: Message):
 # Вызов фукнции интерпретация отдельной карты в Жезлах
 @router.message(F.text == 'Жезлы')
 async def interpretation_wands(message: Message):
-    keyboard = kb.create_inline_kb('Жезлы')
+    keyboard = create_keybords.create_inline_kb('wands')
     await message.answer(text='Выберитер Аркан',
                          reply_markup=keyboard)
 
@@ -269,7 +271,7 @@ async def interpretation_wands(message: Message):
 # Вызов фукнции интерпретация отдельной карты в кубках
 @router.message(F.text == 'Кубки')
 async def interpretation_cups(message: Message):
-    keyboard = kb.create_inline_kb('Кубки')
+    keyboard = create_keybords.create_inline_kb('cups')
     await message.answer(text='Выберитер Аркан',
                          reply_markup=keyboard)
 
@@ -277,7 +279,7 @@ async def interpretation_cups(message: Message):
 # Вызов фукнции интерпретация отдельной карты в Пентаклях
 @router.message(F.text == 'Пентакли')
 async def interpretation_pentacles(message: Message):
-    keyboard = kb.create_inline_kb('Пентакли')
+    keyboard = create_keybords.create_inline_kb('pentacles')
     await message.answer(text='Выберитер Аркан',
                          reply_markup=keyboard)
 
