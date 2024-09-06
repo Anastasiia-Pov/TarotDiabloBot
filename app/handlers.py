@@ -248,7 +248,7 @@ async def interpretation(message: Message):
 @router.message(F.text == 'Старшие Арканы')
 async def interpretation_majors(message: Message):
     keyboard = create_keybords.create_inline_kb('major_arcanas')
-    await message.answer(text='Выберитер Аркан',
+    await message.answer(text='Выберите Аркан',
                          reply_markup=keyboard)
 
 
