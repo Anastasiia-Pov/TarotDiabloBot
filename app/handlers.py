@@ -256,7 +256,7 @@ async def interpretation_majors(message: Message):
 @router.message(F.text == 'Мечи')
 async def interpretation_swords(message: Message):
     keyboard = create_keybords.create_inline_kb('swords')
-    await message.answer(text='Выберитер Аркан',
+    await message.answer(text='Выберите Аркан',
                          reply_markup=keyboard)
 
 
@@ -264,7 +264,7 @@ async def interpretation_swords(message: Message):
 @router.message(F.text == 'Жезлы')
 async def interpretation_wands(message: Message):
     keyboard = create_keybords.create_inline_kb('wands')
-    await message.answer(text='Выберитер Аркан',
+    await message.answer(text='Выберите Аркан',
                          reply_markup=keyboard)
 
 
@@ -272,7 +272,7 @@ async def interpretation_wands(message: Message):
 @router.message(F.text == 'Кубки')
 async def interpretation_cups(message: Message):
     keyboard = create_keybords.create_inline_kb('cups')
-    await message.answer(text='Выберитер Аркан',
+    await message.answer(text='Выберите Аркан',
                          reply_markup=keyboard)
 
 
@@ -280,7 +280,7 @@ async def interpretation_cups(message: Message):
 @router.message(F.text == 'Пентакли')
 async def interpretation_pentacles(message: Message):
     keyboard = create_keybords.create_inline_kb('pentacles')
-    await message.answer(text='Выберитер Аркан',
+    await message.answer(text='Выберите Аркан',
                          reply_markup=keyboard)
 
 
