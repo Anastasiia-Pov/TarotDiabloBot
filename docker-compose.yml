@@ -6,4 +6,4 @@ services:
     command: sh -c "python main.py"
     env_file:
       - ./.env
-    restart: always
+    restart: unless-stopped
