@@ -1,4 +1,4 @@
-# TarotDiabloBot ($${\color{green}working on server now}$$)
+# TarotDiabloBot $${\color{green}(working\spaceon\spaceserver\spacenow)}$$)
 
 This Telegram Bot (@tarot_diablo_bot) is created to practise aiogram3 skills.
 Based on Tarot Diablo by Blizzard: https://uk.gear.blizzard.com/products/diabgp0003-diablo-the-sanctuary-tarot-deck-and-guidebook.
